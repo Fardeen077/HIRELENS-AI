@@ -1,4 +1,4 @@
-import jwt, { sign } from "jsonwebtoken"
+import jwt from "jsonwebtoken"
 import bcrypt from "bcryptjs"
 import mongoose from "mongoose"
 
