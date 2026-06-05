@@ -33,7 +33,13 @@ const userSchema = new mongoose.Schema({
     profileImage: {
         type: String,
         default: "https://cdn-icons-png.flaticon.com/512/847/847969.png",
-    }
+    },
+    role: {
+        type: String,
+        enum: ["USER", "ADMIN"],
+        default: "USER",
+    },
+
 }, { timestamps: true });
 
 userSchema.pre("save", async function () {
