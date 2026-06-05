@@ -4,17 +4,23 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { User } from "../models/user.model.js";
 
 const registerUser = asyncHandler(async (req, res) => {
-    const { name, email, password } = req.body;
-    if (!name || !email || !password) {
+    const { username, email, password } = req.body;
+    if (!username || !email || !password) {
         throw new ApiError(400, "All fields are required");
     }
-    const exists = await User.findOne(email);
-    if (!exists) {
+    if (password.length < 6) {
+        return res.status(400)
+            .json({
+                message: "password must be at least 6 characters"
+            });
+    }
+    const exists = await User.findOne({ email });
+    if (exists) {
         throw new ApiError(409, "User already exists");
     }
 
     const user = await User.create({
-        name: name?.toLowerCase() || "",
+        username: username?.toLowerCase() || "",
         email: email?.toLowerCase() || "",
         password,
     });
@@ -36,12 +42,12 @@ const registerUser = asyncHandler(async (req, res) => {
         .cookie("refreshToken", refreshToken, opts)
         .json(new ApiResponse(201, {
             user: await User.findById(user._id).select("-password -refreshToken")
-        }, "User create successfully"))
+        }, "User created successfully"))
 });
 
 const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
-    if (!emial || !password) {
+    if (!email || !password) {
         throw new ApiError(400, "All fields are required");
     }
 
@@ -50,8 +56,8 @@ const loginUser = asyncHandler(async (req, res) => {
         throw new ApiError(404, "User not found");
     }
 
-    const isPasswordCorrect = await user.isPasswordCorrect(password);
-    if (!isPasswordCorrect) {
+    const isPasswordVali = await user.isPasswordCorrect(password);
+    if (!isPasswordVali) {
         throw new ApiError(401, "Password is incorrect");
     }
 
@@ -77,7 +83,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
 const logoutUser = asyncHandler(async (req, res) => {
     await User.findByIdAndUpdate(req.user._id, {
-        $unset: { refreshToken: 1 },
+        $unset: { refreshToken: "" },
     });
     const options = {
         httpOnly: true,

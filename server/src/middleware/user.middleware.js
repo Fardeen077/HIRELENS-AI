@@ -8,7 +8,7 @@ export const protectRoute = asyncHandler(async (req, res, next) => {
     if (!token) {
         throw new ApiError(401, "Unauthorized request")
     };
-    const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     const user = await User.findById(decoded._id);
     if (!user) {
         throw new ApiError(401, "Invalid accessToken");

@@ -10,9 +10,9 @@ import { roles } from "../middleware/role.middleware.js";
 
 const router = Router();
 
-router.post("/regiter", registerUser);
+router.post("/register", registerUser);
 router.post("/login", loginUser);
-router.post("/logout", protectRoute, loginUser);
+router.post("/logout", protectRoute, logoutUser);
 router.get("/me", protectRoute, getUser);
 
 export default router;
