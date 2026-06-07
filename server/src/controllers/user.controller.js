@@ -9,10 +9,7 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new ApiError(400, "All fields are required");
     }
     if (password.length < 6) {
-        return res.status(400)
-            .json({
-                message: "password must be at least 6 characters"
-            });
+        throw new ApiError(400, "password must be at least 6 characters")
     }
     const exists = await User.findOne({ email });
     if (exists) {
