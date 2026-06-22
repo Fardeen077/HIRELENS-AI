@@ -10,14 +10,17 @@ const uploadResume = asyncHandler(async (req, res) => {
     if (!req.file) {
         throw new ApiError(400, "Resume file is required")
     }
+    console.log("req.file:", req.file);
+
     const cloudinaryResponse = await cloudinary.uploader.upload(req.file.path, {
         resource_type: "raw",
         folder: "resumes",
     });
 
     const resume = await Resume.create({
-        user: req.user._id,
-        resumeUrl: cloudinaryResponse.secure_url,
+        userId: req.user._id,
+        fileName: req.file.originalname,
+        fileUrl: cloudinaryResponse.secure_url,
     });
 
     await fs.promises.unlink(req.file.path);
@@ -36,10 +39,10 @@ const getMyResumes = asyncHandler(async (req, res) => {
 
 const deleteResume = asyncHandler(async (req, res) => {
     // delete resume
-    const { resumaId } = req.params;
+    const { resumeId } = req.params;
     const resuma = await Resume.findOneAndDelete({
-        _id: resumaId,
-        user: req.user._id,
+        _id: resumeId,
+        userId: req.user._id,
     });
 
     if (!resuma) {

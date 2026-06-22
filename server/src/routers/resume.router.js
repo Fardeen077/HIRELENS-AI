@@ -4,7 +4,7 @@ import {
     getMyResumes,
     deleteResume,
 } from "../controllers/resume.controller.js"
-import { protectRoute } from "../middleware/user.middleware";
+import { protectRoute } from "../middleware/user.middleware.js";
 import { upload } from "../middleware/multer.middleware.js";
 
 const router = Router();
