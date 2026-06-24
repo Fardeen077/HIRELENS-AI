@@ -15,7 +15,21 @@ const resumeSchema = new mongoose.Schema({
         required: true,
     },
     publicId: {
-        type: String
+        type: String,
+    },
+    rating: {
+        type: Number,
+        min: 0,
+        max: 100,
+        default: null,
+    },
+    feedback: {
+        type: String,
+        default: "",
+    },
+    analyzedAt: {
+        type: Date,
+        default: null,
     }
 }, { timeseries: true });
 
