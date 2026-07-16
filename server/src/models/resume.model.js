@@ -17,20 +17,39 @@ const resumeSchema = new mongoose.Schema({
     publicId: {
         type: String,
     },
-    rating: {
+    matchScore: {
         type: Number,
         min: 0,
         max: 100,
         default: null,
     },
-    feedback: {
+    matchedSkills: [{
+        type: String,
+    }],
+
+    missingSkills: [{
+        type: String,
+    }],
+
+    strengths: [{
+        type: String,
+    }],
+
+    weaknesses: [{
+        type: String,
+    }],
+
+    suggestions: [{
+        type: String,
+    }],
+    feedback: [{
         type: String,
         default: "",
-    },
+    }],
     analyzedAt: {
         type: Date,
         default: null,
-    }
-}, { timeseries: true });
+    },
+}, { timestamps: true });
 
 export const Resume = mongoose.model("Resume", resumeSchema);
