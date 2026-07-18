@@ -4,6 +4,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import fs from "fs";
 import { ApiError } from "../utils/ApiError.js";
+import { analyzeResume } from "../utils/ai.helper.js"
 
 const uploadResume = asyncHandler(async (req, res) => {
     // upload logic
@@ -26,6 +27,42 @@ const uploadResume = asyncHandler(async (req, res) => {
     await fs.promises.unlink(req.file.path);
 
     return res.status(201).json(new ApiResponse(201, resume, "Resume uploaded successfully"));
+});
+
+const analysisResume = asyncHandler(async (req, res) => {
+    const { jobDescription, resumeId } = req.body;
+    const userId = req.user._id;
+
+    if (!resumeId || !jobDescription) {
+        throw new ApiError(400, "resumeId  or jobDescription is required")
+    }
+
+    const resume = await Resume.findOne({
+        _id: resumeId,
+        userId
+    });
+
+    if (!resume) {
+        throw new ApiError(404, "resume not found");
+    }
+
+    const resumeExtract = await extractResumeText(resume.fileUrl);
+
+    const result = await analyzeResume(resumeExtract, jobDescription);
+
+    // save result in mongodb
+    resume.rating = result.matchScore;
+    resume.matchedSkills = result.matchedSkills;
+    resume.missingSkills = result.missingSkills;
+    resume.strengths = result.strengths;
+    resume.weaknesses = result.weaknesses;
+    resume.suggestions = result.suggestions;
+    resume.feedback = result.feedback;
+    resume.analyzedAt = new Date();
+
+    await resume.save();
+
+    return res.status(200).json(new ApiResponse(200, resume, "Resume analyzed successfully"))
 });
 
 const getMyResumes = asyncHandler(async (req, res) => {
