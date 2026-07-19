@@ -66,13 +66,22 @@ const analysisResume = asyncHandler(async (req, res) => {
 });
 
 const getMyResumes = asyncHandler(async (req, res) => {
-    // fetch resumes
+    // fetch single resumes
     const resume = await Resume.find({ user: req.user._id });
     if (resume.length === 0) {
         throw new ApiError(404, "No resume found")
     }
-    return res.status(200).json(new ApiResponse(200, resume, "Resune fetch successfully"));
+    return res.status(200).json(new ApiResponse(200, resume, "Resume fetched successfully"));
 });
+
+const getAllResumes = asyncHandler(async (req, res) => {
+    // fetched all resume for admin
+    const allResumes = await Resume.find();
+    if (!allResumes) {
+        throw new ApiError(404, "No resume found")
+    }
+    return res.status(200).json(new ApiResponse(200, allResumes, "All resume fetched successfully"));
+})
 
 const deleteResume = asyncHandler(async (req, res) => {
     // delete resume
