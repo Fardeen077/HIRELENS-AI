@@ -5,23 +5,30 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import fs from "fs";
 import { ApiError } from "../utils/ApiError.js";
 import { analyzeResume } from "../utils/ai.helper.js"
+import extractResumeText from "../utils/extractResumeText.js"
 
 const uploadResume = asyncHandler(async (req, res) => {
     // upload logic
     if (!req.file) {
         throw new ApiError(400, "Resume file is required")
     }
-    console.log("req.file:", req.file);
 
     const cloudinaryResponse = await cloudinary.uploader.upload(req.file.path, {
-        resource_type: "raw",
+        resource_type: "auto",
         folder: "resumes",
+        overwrite: false,
+        use_filename: true,
     });
+    console.log("req.file", req.file);
+    console.log("Before upload");
+
+    console.log(cloudinaryResponse);
 
     const resume = await Resume.create({
         userId: req.user._id,
         fileName: req.file.originalname,
         fileUrl: cloudinaryResponse.secure_url,
+        publicId: cloudinaryResponse.public_id
     });
 
     await fs.promises.unlink(req.file.path);
@@ -49,6 +56,10 @@ const analysisResume = asyncHandler(async (req, res) => {
     const resumeExtract = await extractResumeText(resume.fileUrl);
 
     const result = await analyzeResume(resumeExtract, jobDescription);
+
+    console.log("Extracted text length:", resumeExtract.length);
+    console.log("Extracted text FULL:", JSON.stringify(resumeExtract));
+    console.log("Extracted text preview:", resumeExtract.slice(0, 300));
 
     // save result in mongodb
     resume.rating = result.matchScore;
@@ -102,4 +113,6 @@ export {
     uploadResume,
     getMyResumes,
     deleteResume,
+    getAllResumes,
+    analysisResume
 };

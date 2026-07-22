@@ -2,12 +2,14 @@
 // 2 donwload cv from Cloudinary
 // 3 extract text 
 // 4 return text 
+// 6 clean 
 
-import pdfparser from "pdf-parse"
+import { PDFParse } from "pdf-parse";
 import axios from "axios";
-import { ApiError } from "./ApiError";
+import { ApiError } from "./ApiError.js";
 
 const extractResumeText = async (fileUrl) => {
+    let parser;
     try {
         const response = await axios.get(fileUrl, {
             responseType: "arraybuffer",
@@ -15,12 +17,15 @@ const extractResumeText = async (fileUrl) => {
 
         const resumaDownload = Buffer.from(response.data);
 
-        const pdfData = await pdfparser(resumaDownload);
+         parser = new PDFParse({ data: resumaDownload });
+        // console.log(parser);
+        const result = await parser.getText();
 
-        if (!pdfData.text || !pdfData.text.trim()) {
+        if (!result.text || !result.text.trim()) {
             throw new ApiError(400, "No text found in resume.");
         }
-        return pdfData.text;
+        
+        return result.text;
     } catch (error) {
         if (error instanceof ApiError) {
             throw error;
@@ -30,6 +35,10 @@ const extractResumeText = async (fileUrl) => {
             throw new ApiError(400, "Failed to download resume from URL.");
         }
         throw new ApiError(500, `Internal error: ${error.message}`);
+    } finally {
+        if (parser) {
+            await parser.destroy();
+        }
     }
 }
 export default extractResumeText;

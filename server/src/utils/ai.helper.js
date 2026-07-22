@@ -55,14 +55,17 @@ Now analyze the given resume and job description, and return the JSON strictly f
     let text;
     try {
         const res = await genAi.models.generateContent({
-            model: 'gemini-2.5-flash',
+            model: 'gemini-flash-latest',
             contents: prompt,
             config: {
                 responseMimeType: "application/json",
             }
         })
         text = res.text;
+        console.log("text", text);
+
     } catch (error) {
+        console.error("Real error in analyzeResume:", error);
         throw new ApiError(500, "Failed to analyze resume.");
     }
 
@@ -75,6 +78,7 @@ Now analyze the given resume and job description, and return the JSON strictly f
     try {
         rawData = JSON.parse(cleaned)
     } catch (error) {
+
         throw new ApiError(500, "Failed to parse AI response as JSON.");
     }
     const score = Number(rawData.matchScore)
