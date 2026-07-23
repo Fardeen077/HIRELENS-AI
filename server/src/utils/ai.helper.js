@@ -24,6 +24,19 @@ OUTPUT RULES (STRICT):
 - All arrays must contain strings only.
 - matchScore must be an integer between 0 and 100 (no decimals, no % sign).
 - If a field has no relevant data, return an empty array [] (not null, not "N/A").
+- matchScore is REQUIRED.
+- matchScore must NEVER be null.
+- matchScore must be an integer from 0 to 100.
+- If you cannot determine an exact score, estimate the closest integer.
+Calculate matchScore using this formula:
+
+matchScore = ( matched skills count / total required skills count ) * 100
+
+Rules:
+- matchedSkills are skills found in both resume and job description.
+- missingSkills are skills required by job description but not found in resume.
+- Return matchScore as a rounded integer.
+- Never return null.
 
 
 Analyze the resume against the job description.
@@ -81,7 +94,9 @@ Now analyze the given resume and job description, and return the JSON strictly f
 
         throw new ApiError(500, "Failed to parse AI response as JSON.");
     }
-    const score = Number(rawData.matchScore)
+    const score = Number(rawData.matchScore);
+// console.log("AI RAW DATA:", rawData);
+// console.log("MATCH SCORE:", rawData.matchScore);
     const fallbackData = {
         matchScore: Number.isInteger(score) && score >= 0 && score <= 100 ? score : 0,
         matchedSkills: Array.isArray(rawData.matchedSkills) ? rawData.matchedSkills : [],
@@ -91,5 +106,6 @@ Now analyze the given resume and job description, and return the JSON strictly f
         suggestions: Array.isArray(rawData.suggestions) ? rawData.suggestions : ["Review your resume guidelines."],
         feedback: Array.isArray(rawData.feedback) ? rawData.feedback : []
     };
+    console.log("FINAL DATA:", fallbackData);
     return fallbackData;
 };

@@ -62,7 +62,8 @@ const analysisResume = asyncHandler(async (req, res) => {
     // console.log("Extracted text preview:", resumeExtract.slice(0, 300));
 
     // save result in mongodb
-    resume.rating = result.matchScore;
+    // console.log("AI RESULT:", result);
+    resume.matchScore = result.matchScore;
     resume.matchedSkills = result.matchedSkills;
     resume.missingSkills = result.missingSkills;
     resume.strengths = result.strengths;
@@ -72,6 +73,7 @@ const analysisResume = asyncHandler(async (req, res) => {
     resume.analyzedAt = new Date();
 
     await resume.save();
+    // console.log("AFTER SAVE:", resume);
 
     return res.status(200).json(new ApiResponse(200, resume, "Resume analyzed successfully"))
 });
