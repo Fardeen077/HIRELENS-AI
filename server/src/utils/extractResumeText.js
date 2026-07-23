@@ -20,7 +20,8 @@ const extractResumeText = async (fileUrl) => {
          parser = new PDFParse({ data: resumaDownload });
         // console.log(parser);
         const result = await parser.getText();
-
+        console.log(result); 
+        
         if (!result.text || !result.text.trim()) {
             throw new ApiError(400, "No text found in resume.");
         }

@@ -11,7 +11,7 @@ import { upload } from "../middleware/multer.middleware.js";
 
 const router = Router();
 router.post("/upload", protectRoute, upload.single("resume"), uploadResume);
-router.get("/getresume", protectRoute, getMyResumes);
+router.get("/getresume/:userId", protectRoute, getMyResumes);
 router.delete("/:resumeId", protectRoute, deleteResume)
 router.get("/getall",protectRoute, getAllResumes)
 router.post("/analysis", protectRoute, analysisResume);

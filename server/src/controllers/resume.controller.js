@@ -9,16 +9,16 @@ import extractResumeText from "../utils/extractResumeText.js"
 
 const uploadResume = asyncHandler(async (req, res) => {
     // upload logic
+    const userId = req.user._id;
     if (!req.file) {
         throw new ApiError(400, "Resume file is required")
     }
+    console.log(req.file);
 
     const cloudinaryResponse = await cloudinary.uploader.upload(req.file.path, {
-        resource_type: "auto",
-        folder: "resumes",
-        overwrite: false,
-        use_filename: true,
+        "resource_type": "auto"
     });
+
     console.log("req.file", req.file);
     console.log("Before upload");
 
@@ -33,7 +33,7 @@ const uploadResume = asyncHandler(async (req, res) => {
 
     await fs.promises.unlink(req.file.path);
 
-    return res.status(201).json(new ApiResponse(201, resume, "Resume uploaded successfully"));
+    return res.status(201).json(new ApiResponse(201, { resume }, "Resume uploaded successfully"));
 });
 
 const analysisResume = asyncHandler(async (req, res) => {
@@ -57,9 +57,9 @@ const analysisResume = asyncHandler(async (req, res) => {
 
     const result = await analyzeResume(resumeExtract, jobDescription);
 
-    console.log("Extracted text length:", resumeExtract.length);
-    console.log("Extracted text FULL:", JSON.stringify(resumeExtract));
-    console.log("Extracted text preview:", resumeExtract.slice(0, 300));
+    // console.log("Extracted text length:", resumeExtract.length);
+    // console.log("Extracted text FULL:", JSON.stringify(resumeExtract));
+    // console.log("Extracted text preview:", resumeExtract.slice(0, 300));
 
     // save result in mongodb
     resume.rating = result.matchScore;
@@ -78,7 +78,7 @@ const analysisResume = asyncHandler(async (req, res) => {
 
 const getMyResumes = asyncHandler(async (req, res) => {
     // fetch single resumes
-    const resume = await Resume.find({ user: req.user._id });
+    const resume = await Resume.find({ userId: req.user._id });
     if (resume.length === 0) {
         throw new ApiError(404, "No resume found")
     }
