@@ -13,14 +13,14 @@ const uploadResume = asyncHandler(async (req, res) => {
     if (!req.file) {
         throw new ApiError(400, "Resume file is required")
     }
-    console.log(req.file);
+    // console.log(req.file);
 
     const cloudinaryResponse = await cloudinary.uploader.upload(req.file.path, {
         "resource_type": "auto"
     });
 
-    console.log("req.file", req.file);
-    console.log("Before upload");
+    // console.log("req.file", req.file);
+    // console.log("Before upload");
 
     console.log(cloudinaryResponse);
 

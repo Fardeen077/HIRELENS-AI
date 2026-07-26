@@ -30,9 +30,13 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "",
     },
-    profileImage: {
+    profilePic: {
         type: String,
-        default: "https://cdn-icons-png.flaticon.com/512/847/847969.png",
+        default: "https://res.cloudinary.com/your-cloud/image/upload/v123456/default-avatar.png",
+    },
+    profilePicPublicId: {
+        type: String,
+        default: null,
     },
     role: {
         type: String,

@@ -18,7 +18,20 @@ const fileFilter = (req, file, cb)=> {
     }  
 }
 
+const imageFilter = (req, file, cb)=> {
+    if(file.mimetype === "application/png") {
+        cb(null, true)
+    } else {
+        cb(new Error("Only png image are allowed"))
+    }
+}
+// pdf upload only
 export const upload = multer({
     storage,
-    fileFilter
+    fileFilter,
+});
+// image upload only
+export const uploadImage = multer({
+    storage,
+    imageFilter
 })
