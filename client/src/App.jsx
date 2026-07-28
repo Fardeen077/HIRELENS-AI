@@ -1,6 +1,6 @@
 function App () {
 return (
-    <div>
+    <div className="text-2xl flex justify-center bg-background-gray h-screen">
         React hello
     </div>
 )

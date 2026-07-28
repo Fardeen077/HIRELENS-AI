@@ -4,6 +4,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { User } from "../models/user.model.js";
 import cloudinary from "../config/cloudinary.js";
 import fs from "fs"
+import { log } from "console";
 
 const registerUser = asyncHandler(async (req, res) => {
     const { username, email, password } = req.body;
@@ -104,11 +105,13 @@ const getUser = asyncHandler(async (req, res) => {
 });
 
 const updateProfile = asyncHandler(async (req, res) => {
-    const user = req.user;
+    const user = req.user._id;
+    console.log(user);
+
     if (!req.file) {
         throw new ApiError(400, "image file is required")
     }
-    console.log(req.file);
+    // console.log(req.file);
 
     if (user.profilePicPublicId) {
         await cloudinary.uploader.destroy(user.profilePicPublicId);
@@ -117,12 +120,12 @@ const updateProfile = asyncHandler(async (req, res) => {
     const uploadImage = await cloudinary.uploader.upload(req.file.path, {
         "resource_type": "image",
     });
-    console.log(uploadImage);
+    // console.log(uploadImage);
 
     const updateUserProfile = await User.findByIdAndUpdate(user, {
         profilePic: uploadImage.secure_url,
         profilePicPublicId: uploadImage.public_id,
-    }, { new: true }).select("-password -refreshToken");
+    }, { returnDocument: "after" }).select("-password -refreshToken");
 
     await fs.promises.unlink(req.file.path)
     return res.status(200).json(new ApiResponse(200, { user: updateUserProfile }, "Profile updated successfully"))
