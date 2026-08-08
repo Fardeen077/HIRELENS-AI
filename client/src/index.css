@@ -31,4 +31,107 @@ body,
 
   --color-primary: #F59E0B;
   --color-primary-hover: #D97706;
+
+  --animate-cv-scan: cv-scan 3s ease-in-out infinite;
+  --animate-search-scan: search-scan 3s ease-in-out infinite;
+  --animate-float: float 4s ease-in-out infinite;
+  --animate-analysis-progress: analysis-progress 3s ease-in-out infinite;
+  --animate-score-appear: score-appear 3s ease-in-out infinite;
+}
+
+
+@keyframes cv-scan {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateY(355px);
+    opacity: 1;
+  }
+
+  60% {
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+}
+
+@keyframes search-scan {
+
+  0%,
+  10% {
+    transform: translateY(-120px);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  55% {
+    transform: translateY(120px);
+    opacity: 1;
+  }
+
+  65%,
+  100% {
+    transform: translateY(120px);
+    opacity: 0;
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes analysis-progress {
+  0% {
+    width: 10%;
+  }
+
+  50% {
+    width: 80%;
+  }
+
+  100% {
+    width: 10%;
+  }
+}
+
+@keyframes score-appear {
+
+  0%,
+  15% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.95);
+  }
+
+  30%,
+  75% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  90%,
+  100% {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.95);
+  }
 }
