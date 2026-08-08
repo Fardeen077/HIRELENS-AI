@@ -30,5 +30,5 @@ export {
     loginApi,
     logoutApi,
     getMeApi,
-    updateProfileApi,
+    updateProfileImageApi,
 };

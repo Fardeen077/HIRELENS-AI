@@ -4,7 +4,7 @@ import {
     loginApi,
     logoutApi,
     getMeApi,
-    updateProfileApi,
+    updateProfileImageApi,
 } from "../apis/authApi"
 
 const useAuthStore = create((set) => ({
@@ -18,10 +18,12 @@ const useAuthStore = create((set) => ({
         set({ isAuthLoading: true, error: null });
         try {
             const res = await registerApi(userData);
-            set({ isAuthLoading: false, authUser: res.data.user, isAuth: true })
+            set({ isAuthLoading: false, authUser: res.data.user, isAuth: true });
+            console.log(res);
+            
             return res.data;
         } catch (error) {
-            set({ isLoading: false, error: error?.response?.data?.message || "failed to fetch" });
+            set({ isAuthLoading: false, error: error?.response?.data?.message || "failed to fetch" });
             throw error;
         }
     },
@@ -30,32 +32,36 @@ const useAuthStore = create((set) => ({
         set({ isAuthLoading: true, error: null });
         try {
             const res = await loginApi(userData);
-            set({ isAuthLoading: false, authUser: res.data.user, isAuth: true })
+            set({ isAuthLoading: false, authUser: res.data.user, isAuth: true });
+            console.log(res);
+            
             return res.data;
         } catch (error) {
-            set({ isLoading: false, error: error?.response?.data?.message || "failed to fetch" });
+            set({ isAuthLoading: false, error: error?.response?.data?.message || "failed to fetch" });
             throw error;
         }
     },
+
     getme: async () => {
         set({ isAuthLoading: true, error: null });
         try {
             const res = await getMeApi();
-            set({ isAuthLoading: false, authUser: res.data.user, isAuth: true, isCheckingAuth: true })
+            set({ isAuthLoading: false, authUser: res.data.user, isAuth: true, isCheckingAuth: false });
             return res.data;
         } catch (error) {
-            set({ isLoading: false, error: error?.response?.data?.message, isAuth: false, isCheckingAuth: false || "failed to fetch" });
+            set({ isAuthLoading: false, error: error?.response?.data?.message || "failed to fetch", isAuth: false, isCheckingAuth: false });
             throw error;
         }
     },
+
     logout: async () => {
-        set({ isLoading: true, error: null });
+        set({ isAuthLoading: true, error: null });
         try {
             const res = await logoutApi();
-            set({ isLoading: false, authUser: null, isAuth: false })
+            set({ isAuthLoading: false, authUser: null, isAuth: false });
             return res.data;
         } catch (error) {
-            set({ isLoading: false, error: error?.response?.data?.message || "failed to fetch" });
+            set({ isAuthLoading: false, error: error?.response?.data?.message || "failed to fetch", isCheckingAuth: false });
             throw error;
         }
     },
