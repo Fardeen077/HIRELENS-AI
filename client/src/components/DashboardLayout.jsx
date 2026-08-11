@@ -1,13 +1,12 @@
 import React from 'react'
-// import Sidebar from './Sidebar'
+import Sidebar from './Sidebar'
 import { Outlet } from "react-router-dom";
 function DashboardLayout() {
     return (
-        <div className="md:min-h-screen flex bg-black h-screen">
-            
+        <div className="md:min-h-screen flex h-screen text-white">
+
             {/* sidebar - handles both desktop and mobile */}
-            {/* <Sidebar /> */}
-            sidebar
+            <Sidebar />
             {/* main content */}
             <div className="flex-1 min-w-0 md:overflow-y-auto">
                 <div className="p-4">

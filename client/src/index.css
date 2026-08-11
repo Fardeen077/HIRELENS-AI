@@ -5,15 +5,17 @@ body,
 #root {
   min-height: 100%;
   margin: 0;
-  font-family: "Inter", sans-serif
+  font-family: "Inter", sans-serif;
+  background:#241401;
+  color: #1A1110;
 }
 
 @theme {
   /* Dark Theme */
   /* Coffee Bean */
-  --color-background-Coffee: #1A1110;
+  --color-background-Coffee: #241401;
   /* Card */
-  --color-surface-dark: #4A3B39;
+  --bg-surface-dark: #4A3B39;
 
   --color-text-dark: #F8FAFC;
 

@@ -1,9 +1,12 @@
 import CvScanningAnimation from "../components/CvScanningAnimation"
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useForm } from "react-hook-form"
 import useAuthStore from "../store/useAuthStore"
+import { Link } from "react-router-dom";
 
 function Login() {
     const loginUser = useAuthStore((s) => s.login);
+    const isAuthLoading = useAuthStore((s) => s.isAuthLoading)
     const { register, handleSubmit, formState: {
         errors, isSubmitting
     } } = useForm();
@@ -14,38 +17,74 @@ function Login() {
             console.log("Register success", userData);
         } catch (error) {
             console.error(error?.response?.data?.message);
-             console.error("LOGIN ERROR:", error);
+            console.error("LOGIN ERROR:", error);
         }
     }
     return (
-        <form onSubmit={handleSubmit(handleLogin)}>
-            <input
-                type="email"
-                placeholder="Email"
-                {...register("email", {
-                    required: "Email is required",
-                })}
-            />
+        <div className="flex items-center justify-center gap-10 min-h-screen">
+            <div className="w-full max-w-md">
+                <form onSubmit={handleSubmit(handleLogin)}
+                    className="text-white bg-[#4A3B39] flex flex-col gap-4 p-6 rounded-xl">
+                    <div className="text-center mb-2">
+                        <h1 className="text-2xl font-semibold">Welcome Back</h1>
+                        <p className="text-sm">
+                            Please login to your account
+                        </p>
+                    </div>
 
-            {errors.email && <p>{errors.email.message}</p>}
-            <input
-                type="password"
-                placeholder="Password"
-                {...register("password", {
-                    required: "Password is required",
-                    minLength: {
-                        value: 6,
-                        message: "Password must be at least 6 characters",
-                    },
-                })}
-            />
-            {errors.password && <p>{errors.password.message}</p>}
+                    {errors.username && <p className="text-red-600 text-sm">{errors.username.message}</p>}
+                    <input
+                        className="p-2 rounded border-2 focus:outline-none"
+                        type="email"
+                        placeholder="Email"
+                        {...register("email", {
+                            required: "Email is required",
+                        })}
+                    />
 
-            <button disabled={isSubmitting}>
-                {isSubmitting ? "loading" : "login"}
-            </button>
+                    {errors.email && <p className="text-red-600 text-sm">{errors.email.message}</p>}
+                    <input
+                        className="p-2 rounded border-2 focus:outline-none"
+                        type="password"
+                        placeholder="Password"
+                        {...register("password", {
+                            required: "Password is required",
+                            minLength: {
+                                value: 6,
+                                message: "Password must be at least 6 characters",
+                            },
+                        })}
+                    />
+                    {errors.password && <p className="text-red-600 text-sm">{errors.password.message}</p>}
 
-        </form>
+                    <button disabled={isAuthLoading}
+                        className="bg-[#241401] rounded p-2 cursor-pointer">
+                        {isAuthLoading ? (
+                            <>
+                                <AiOutlineLoading3Quarters className="h-5 w-5 animate-spin inline mr-2" />
+                                Login
+                            </>
+                        ) : (
+                            "Login Account"
+                        )}
+
+                    </button>
+                    <p className="text-sm text-center mt-4">
+                        you don't have account?{" "}
+                        <Link
+                            to="/register"
+                            className="text-blue-600 hover:text-blue-700 font-medium"
+                        >
+                            Regitser
+                        </Link>
+                    </p>
+                </form>
+            </div>
+
+            <div className="mt-2 hidden lg:block">
+                <CvScanningAnimation />
+            </div>
+        </div>
     )
 }
 

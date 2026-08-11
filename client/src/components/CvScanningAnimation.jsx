@@ -3,7 +3,7 @@ import { TbSparkles2Filled } from "react-icons/tb";
 
 const CvScanningAnimation = () => {
   return (
-    <div className="relative flex h-130 w-full items-center justify-center overflow-hidden">
+    <div className="relative flex h-130 w-175 items-center justify-center overflow-hidden">
       {/* Background glow */}
       <div className="absolute h-72 w-72 rounded-full bg-indigo-500/10 blur-3xl" />
 
@@ -13,7 +13,7 @@ const CvScanningAnimation = () => {
       <div className="absolute bottom-[22%] left-[25%] h-2 w-2 animate-pulse rounded-full bg-indigo-300 [animation-delay:2s]" />
 
       {/* CV Document */}
-      <div className="relative z-10 h-90 w-67 -rotate-3 rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl">
+      <div className="relative z-10 h-90 w-67 -rotate-3 rounded-2xl border border-slate-200 bg-[#4A3B39] p-6 shadow-2xl">
         {/* CV Header */}
         <div className="mb-6 flex items-center gap-3">
           <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-100 text-sm font-bold text-indigo-600">
@@ -76,7 +76,7 @@ const CvScanningAnimation = () => {
       </div>
 
       {/* AI Analysis card */}
-      <div className="absolute bottom-16 right-[4%] z-20 w-52 animate-float rounded-2xl border border-slate-200 bg-white p-4 shadow-xl">
+      <div className="absolute bottom-2 right-[8%] z-20 w-52 animate-float rounded-2xl border border-slate-200 bg-[#4A3B39] p-4 shadow-xl">
         <div className="flex items-center gap-2">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-100 text-indigo-600">
             <TbSparkles2Filled size={18} />
@@ -98,7 +98,7 @@ const CvScanningAnimation = () => {
       </div>
 
       {/* Match Score */}
-      <div className="absolute left-[3%] top-17 z-20 animate-score-appear rounded-2xl border border-slate-200 bg-white p-4 shadow-xl">
+      <div className="absolute left-[8%] top-17 z-20 animate-score-appear rounded-2xl border border-slate-200 bg-[#4A3B39] p-4 shadow-xl">
         <p className="text-[10px] font-medium uppercase tracking-wider text-slate-400">
           Match Score
         </p>
