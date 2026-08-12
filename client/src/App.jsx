@@ -8,12 +8,15 @@ import ProtectedRoute from "./components/ProtectedRoute"
 import PublicRoute from "./components/PublicRoute"
 import DashboardLayout from "./components/DashboardLayout";
 import useAuthStore from "./store/useAuthStore";
+import Settings from "./pages/Settings";
+import Analyze from "./pages/Analyze";
+import Resumes from "./pages/Resumes";
 
 function App() {
     const getMe = useAuthStore((s) => s.getme);
 
     useEffect(() => {
-        getMe().catch(() => {});
+        getMe().catch(() => { });
     }, [getMe]);
 
     return (
@@ -22,7 +25,10 @@ function App() {
                 {/* PROTECTED */}
                 <Route element={<ProtectedRoute />}>
                     <Route element={<DashboardLayout />}>
-                        <Route index element={<Dashboard />} />
+                    <Route index element={<Dashboard />} />
+                        <Route path="/analyze" element={<Analyze />} />
+                        <Route path="/resumes" element={<Resumes />} />
+                        <Route path="/settings" element={<Settings />} />
                     </Route>
                 </Route>
 
