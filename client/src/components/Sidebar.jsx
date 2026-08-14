@@ -65,7 +65,6 @@ function Sidebar() {
 
                     <NavLink to="/settings">
                         <button
-                            onClick={handleLogout}
                             className="cursor-pointer"><IoIosSettings size={20} />
                         </button>
                     </NavLink>
