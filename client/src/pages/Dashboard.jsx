@@ -1,7 +1,11 @@
+import useAuthStore from "../store/useAuthStore"
+
 function Dashboard () {
+    const authUser = useAuthStore((s) => s.authUser);
+    
 return (
     <div>
-        WellCome Fardeen
+        <h1 className="text-white">Welcome, {authUser?.username}</h1>
     </div>
 )
 }

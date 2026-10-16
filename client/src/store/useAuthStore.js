@@ -46,7 +46,11 @@ const useAuthStore = create((set) => ({
         set({ isAuthLoading: true, error: null });
         try {
             const res = await getMeApi();
-            set({ isAuthLoading: false, authUser: res.data.user, isAuth: true, isCheckingAuth: false });
+
+            // console.log("FULL RESPONSE:", res);
+            // console.log("RESPONSE DATA:", res.data);
+            // console.log("USER:", res.data?.user);
+            set({ isAuthLoading: false, authUser: res.data, isAuth: true, isCheckingAuth: false });
             return res.data;
         } catch (error) {
             set({ isAuthLoading: false, error: error?.response?.data?.message || "failed to fetch", isAuth: false, isCheckingAuth: false });

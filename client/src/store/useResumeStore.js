@@ -9,6 +9,9 @@ import {
 
 const useResumeStore = create((set) => ({
     resumes: [],
+    analysisResume,
+    myResumes,
+    isMyResumeLoading: false,
     isResumeLoading: true,
     error: null,
 
@@ -16,7 +19,10 @@ const useResumeStore = create((set) => ({
         set({ isResumeLoading: true, error: null });
         try {
             const res = await uploadResumeApi(resume);
-            set({ isResumeLoading: false, resumes: res.data });
+            set((state) => ({
+                resumes: [res.data, ...state.resumes],
+                isResumeLoading: false,
+            }))
             return res.data;
         } catch (error) {
             set({ isResumeLoading: false, error: error?.response?.data?.message || "failed to upload resume" });
@@ -28,7 +34,7 @@ const useResumeStore = create((set) => ({
         set({ isResumeLoading: true, error: null });
         try {
             const res = await getOwnResumeApi(userId);
-            set({ isResumeLoading: false, resumes: res.data })
+            set({ isMyResumeLoading: false, myResumes: res.data })
             return res.data;
         } catch (error) {
             set({ isResumeLoading: false, error: error?.response?.data?.message || "failed to fetch own resume" });
@@ -67,7 +73,7 @@ const useResumeStore = create((set) => ({
         set({ isResumeLoading: true, error: null });
         try {
             const res = await analysisResumeApi(analysisData)
-            set({ isResumeLoading: false, resumes: res.data });
+            set({ isResumeLoading: false, analysisResume: res.data });
             return res.data;
         } catch (error) {
             set({ isResumeLoading: false, error: error?.response?.data?.message || "failed to fetch" });

@@ -14,18 +14,20 @@ import Resumes from "./pages/Resumes";
 
 function App() {
     const getMe = useAuthStore((s) => s.getme);
+    // const authUser = useAuthStore((s) => s.authUser)
 
     useEffect(() => {
-        getMe().catch(() => { });
-    }, [getMe]);
+        getMe();
+    }, []);
 
+    // console.log("App render:", authUser);
     return (
         <BrowserRouter>
             <Routes>
                 {/* PROTECTED */}
                 <Route element={<ProtectedRoute />}>
                     <Route element={<DashboardLayout />}>
-                    <Route index element={<Dashboard />} />
+                        <Route index element={<Dashboard />} />
                         <Route path="/analyze" element={<Analyze />} />
                         <Route path="/resumes" element={<Resumes />} />
                         <Route path="/settings" element={<Settings />} />

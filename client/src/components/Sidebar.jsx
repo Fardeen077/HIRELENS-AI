@@ -63,7 +63,7 @@ function Sidebar() {
 
                 <li>
 
-                    <NavLink to="/settings">
+                    <NavLink to="/settings" className={({ isActive }) => isActive ? "text-white" : ""}>
                         <button
                             className="cursor-pointer"><IoIosSettings size={20} />
                         </button>
