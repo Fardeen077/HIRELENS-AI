@@ -5,12 +5,12 @@ import {
     getAllResumeApi,
     deleteResumeApi,
     analysisResumeApi,
-} from "../apis/authApi"
+} from "../apis/resumeApi"
 
 const useResumeStore = create((set) => ({
     resumes: [],
-    analysisResume,
-    myResumes,
+    analysisResume:[],
+    myResumes:[],
     isMyResumeLoading: false,
     isResumeLoading: true,
     error: null,
@@ -80,4 +80,6 @@ const useResumeStore = create((set) => ({
             throw error;
         }
     },
-}))
+}));
+
+export default useResumeStore
