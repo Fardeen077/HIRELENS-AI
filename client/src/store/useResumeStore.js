@@ -35,7 +35,11 @@ const useResumeStore = create((set) => ({
         try {
             const res = await getOwnResumeApi(userId);
             set({ isMyResumeLoading: false, myResumes: res.data })
+            console.log(res.data, "res 1");
+            console.log(res,"res 2");
+            
             return res.data;
+            
         } catch (error) {
             set({ isResumeLoading: false, error: error?.response?.data?.message || "failed to fetch own resume" });
             throw error;
