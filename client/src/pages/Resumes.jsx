@@ -7,15 +7,26 @@ function Resumes() {
     useEffect(() => {
         getOwnResume()
     }, [getOwnResume]);
+
+    // const getPreviewUrl = (url) => {
+    //     return url
+    //         .replace("/raw/upload/", "/image/upload/")
+    //         .replace(".pdf", ".jpg");
+    // };
     return (
-        <div className='text-white'>
+        <div>
             Resumes
 
-            <div>
+            <div className='mt-5'>
                 <ul>
                     {myResumes.map((resume) => (
                         <li key={resume._id}>
-                            {resume.fileName}
+                            <h3>{resume.fileName}</h3>
+                            {/* <img
+                                src={getPreviewUrl(resume.fileUrl)}
+                                alt={resume.fileName}
+                                className="w-48 h-60  rounded-lg"
+                            /> */}
                         </li>
                     ))}
                 </ul>

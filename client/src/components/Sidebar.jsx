@@ -8,10 +8,13 @@ import { TbSparkles2Filled } from "react-icons/tb";
 import { IoIosSettings } from "react-icons/io";
 import { FaFileAlt } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
+import { useThemeStore } from "../store/useThemeStore";
 
 function Sidebar() {
     const logout = useAuthStore((s) => s.logout);
-    const theme = useState(true);
+    // const theme = useState(true);
+    const theme = useThemeStore((state) => state.theme);
+    const toggleTheme = useThemeStore((state) => state.toggleTheme);
 
     async function handleLogout() {
         try {
@@ -54,11 +57,13 @@ function Sidebar() {
                 </li>
 
                 <li>
-                    <button className="cursor-pointer">{theme ? (
-                        < MdOutlineWbSunny />
-                    ) : (
-                        <FaRegMoon />
-                    )}</button>
+                    <button
+                        onClick={toggleTheme}
+                        className="cursor-pointer">{theme === "light" ? (
+                            < MdOutlineWbSunny />
+                        ) : (
+                            <FaRegMoon />
+                        )}</button>
                 </li>
 
                 <li>

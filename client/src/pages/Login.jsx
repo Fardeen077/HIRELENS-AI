@@ -24,7 +24,7 @@ function Login() {
         <div className="flex items-center justify-center gap-10 min-h-screen">
             <div className="w-full max-w-md">
                 <form onSubmit={handleSubmit(handleLogin)}
-                    className="text-white bg-[#4A3B39] flex flex-col gap-4 p-6 rounded-xl">
+                    className="text-white bg-[#1F2937] flex flex-col gap-4 p-6 rounded-xl">
                     <div className="text-center mb-2">
                         <h1 className="text-2xl font-semibold">Welcome Back</h1>
                         <p className="text-sm">
@@ -58,7 +58,7 @@ function Login() {
                     {errors.password && <p className="text-red-600 text-sm">{errors.password.message}</p>}
 
                     <button disabled={isAuthLoading}
-                        className="bg-[#241401] rounded p-2 cursor-pointer">
+                        className="bg-[#f97316] rounded p-2 cursor-pointer hover:bg-[#ea580c]">
                         {isAuthLoading ? (
                             <>
                                 <AiOutlineLoading3Quarters className="h-5 w-5 animate-spin inline mr-2" />

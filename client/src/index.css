@@ -1,8 +1,33 @@
 @import "tailwindcss";
 
-html,
-body,
-#root {
+:root {
+  --bg-color: white;
+  --text-color: black;
+  --text-color: #111827;
+  --secondary-color: #6b7280;
+  --border-color: #e5e7eb;
+  --primary-color: #f97316;
+
+}
+
+[data-theme="dark"] {
+  --bg-color: #111827;
+  --text-color: white;
+  --secondary-color: #9ca3af;
+  --border-color: #374151;
+  --primary-color: #f97316;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+
+
+
+/* #root {
   min-height: 100%;
   margin: 0;
   font-family: "Inter", sans-serif;
@@ -12,34 +37,34 @@ body,
 
 @theme {
   /* Dark Theme */
-  /* Coffee Bean */
-  --color-background-Coffee: #241401;
+/* Coffee Bean */
+/* --color-background-Coffee: #241401;
   /* Card */
-  --bg-surface-dark: #4A3B39;
+/* --bg-surface-dark: #4A3B39; */
 
-  --color-text-dark: #F8FAFC;
+/* --color-text-dark: #F8FAFC; */
 
-  --color-shadow-dark: #000000;
+/* --color-shadow-dark: #000000; */
 
-  --color-primary: #F59E0B;
-  /* Orange */
-  --color-primary-hover: #D97706;
+/* --color-primary: #F59E0B; */
+/* Orange */
+/* --color-primary-hover: #D97706; */
 
-  /* Light Theme  */
-  --color-background-gray: #E5E4E2;
+/* Light Theme  */
+/* --color-background-gray: #E5E4E2;
   --color-surface-light: #FFFFFF;
   --color-text-light: #111827;
-  --color-shadow-light: #D1D5DB;
+  --color-shadow-light: #D1D5DB; */
 
-  --color-primary: #F59E0B;
-  --color-primary-hover: #D97706;
+/* --color-primary: #F59E0B; */
+/* --color-primary-hover: #D97706; */
 
-  --animate-cv-scan: cv-scan 3s ease-in-out infinite;
-  --animate-search-scan: search-scan 3s ease-in-out infinite;
-  --animate-float: float 4s ease-in-out infinite;
-  --animate-analysis-progress: analysis-progress 3s ease-in-out infinite;
-  --animate-score-appear: score-appear 3s ease-in-out infinite;
-}
+/* --animate-cv-scan: cv-scan 3s ease-in-out infinite; */
+/* --animate-search-scan: search-scan 3s ease-in-out infinite; */
+/* --animate-float: float 4s ease-in-out infinite; */
+/* --animate-analysis-progress: analysis-progress 3s ease-in-out infinite; */
+/* --animate-score-appear: score-appear 3s ease-in-out infinite;// */
+/* } */
 
 
 @keyframes cv-scan {

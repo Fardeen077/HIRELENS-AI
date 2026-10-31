@@ -7,7 +7,7 @@ function NotFound() {
     }
 
     return (
-        <div className="text-white justify-center items-center text-center flex min-h-screen">
+        <div className="justify-center items-center text-center flex min-h-screen">
             <div>
                 <h1 className="text-8xl mt-3 bold">404</h1>
                 <span className="text-2xl">Not Found</span>

@@ -27,7 +27,7 @@ function Dashboard() {
     return (
         <div className="min-h-screen">
             <div className="flex flex-col gap-7">
-                <h1 className="text-white justify-center flex">Welcome, {authUser?.username}</h1>
+                <h1 className="justify-center flex">Welcome, {authUser?.username}</h1>
 
                 <div className="flex justify-center">
                     <div

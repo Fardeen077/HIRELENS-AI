@@ -3,7 +3,7 @@ import Sidebar from './Sidebar'
 import { Outlet } from "react-router-dom";
 function DashboardLayout() {
     return (
-        <div className="md:min-h-screen flex h-screen text-white">
+        <div className="md:min-h-screen flex h-screen">
 
             {/* sidebar - handles both desktop and mobile */}
             <Sidebar />
