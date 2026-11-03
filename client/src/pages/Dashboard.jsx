@@ -1,27 +1,43 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import useAuthStore from "../store/useAuthStore"
 import { FaCloudUploadAlt } from "react-icons/fa";
 import useResumeStore from "../store/useResumeStore";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function Dashboard() {
     const authUser = useAuthStore((s) => s.authUser);
+    const analysisResume = useResumeStore((s) => s.analysisResume);
     const fileInputRef = useRef(null);
-    const uploadResume = useResumeStore((s)=> s.uploadResume)
+    const uploadResume = useResumeStore((s) => s.uploadResume)
     const navigate = useNavigate();
+    const [resume, setResume] = useState(null);
+    const [jobDescription, setJobDescription] = useState("");
 
-    const handleUplaodResume = async (e) => {
-        const resume = e.target.files[0]
-        if (!resume) return
+
+    const handleAnalysisResume = async () => {
+        if (!resume || !jobDescription) {
+            console.log("Resume or Jobdescription is required");
+        }
         try {
-            console.log("Selected file:", resume.name);
-
             const res = await uploadResume(resume);
-            navigate("/analyze")
+            console.log(res, "indashboard");
 
-            console.log("Upload response:", res);
+            const resumeId = uploadResume?._id;
+
+            if (!resumeId) {
+                console.log(error);
+            }
+
+            navigate("/analyze", {
+                state: {
+                    resumeId,
+                    jobDescription
+                }
+            });
+            useLocation()
         } catch (error) {
-            console.log("Upload error:", error?.response?.data?.message || error.message)
+            console.log(error);
+
         }
     }
     return (
@@ -41,10 +57,22 @@ function Dashboard() {
                             accept=".pdf,application/pdf"
                             className="hidden"
                             ref={fileInputRef}
-                            onChange={handleUplaodResume}
+                            onChange={(e) => setResume(e.target.files[0] || null)}
                         />
                     </div>
                 </div>
+            </div>
+            <div className="flex items-center justify-center mt-20">
+                <textarea
+                    onChange={(e) => setJobDescription(e.target.value)}
+                    type="text" placeholder="Plesae enter your Job Description"
+                    className="boarder border-gray-500 outline-none border-2 rounded-2xl w-4xl h-50 text-start p-4 text-sm" />
+            </div>
+            <div className="justify-center items-center flex mt-15">
+                <button className="bg-[#f97316] rounded p-2 cursor-pointer hover:bg-[#ea580c] w-30"
+                    onClick={handleAnalysisResume}
+                >
+                    Analize</button>
             </div>
         </div>
     )
