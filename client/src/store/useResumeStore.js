@@ -5,12 +5,28 @@ import {
     getAllResumeApi,
     deleteResumeApi,
     analysisResumeApi,
-} from "../apis/resumeApi"
+} from "../apis/resumeApi";
+
+const unwrapResponseData = (response) => {
+    if (!response) return null;
+
+    if (response?.data && typeof response.data === "object") {
+        if (Object.prototype.hasOwnProperty.call(response.data, "data")) {
+            return response.data.data;
+        }
+        if (Object.prototype.hasOwnProperty.call(response.data, "resume")) {
+            return response.data.resume;
+        }
+        return response.data;
+    }
+
+    return response;
+};
 
 const useResumeStore = create((set) => ({
     resumes: [],
-    analysisResume:[],
-    myResumes:[],
+    analysisResult: null,
+    myResumes: [],
     isMyResumeLoading: false,
     isResumeLoading: true,
     error: null,
@@ -19,11 +35,12 @@ const useResumeStore = create((set) => ({
         set({ isResumeLoading: true, error: null });
         try {
             const res = await uploadResumeApi(resume);
+            const uploadedResume = unwrapResponseData(res) ?? null;
             set((state) => ({
-                resumes: [res.data, ...state.resumes],
+                resumes: uploadedResume ? [uploadedResume, ...state.resumes] : state.resumes,
                 isResumeLoading: false,
-            }))
-            return res.data;
+            }));
+            return uploadedResume;
         } catch (error) {
             set({ isResumeLoading: false, error: error?.response?.data?.message || "failed to upload resume" });
             throw error;
@@ -34,12 +51,9 @@ const useResumeStore = create((set) => ({
         set({ isResumeLoading: true, error: null });
         try {
             const res = await getOwnResumeApi(userId);
-            set({ isMyResumeLoading: false, myResumes: res.data })
-            console.log(res.data, "res 1");
-            console.log(res,"res 2");
-            
-            return res.data;
-            
+            const data = unwrapResponseData(res) ?? [];
+            set({ isMyResumeLoading: false, myResumes: data });
+            return data;
         } catch (error) {
             set({ isResumeLoading: false, error: error?.response?.data?.message || "failed to fetch own resume" });
             throw error;
@@ -50,8 +64,9 @@ const useResumeStore = create((set) => ({
         set({ isResumeLoading: true, error: null });
         try {
             const res = await getAllResumeApi();
-            set({ isResumeLoading: false, resumes: res.data });
-            return res.data;
+            const data = unwrapResponseData(res) ?? [];
+            set({ isResumeLoading: false, resumes: data });
+            return data;
         } catch (error) {
             set({ isResumeLoading: false, error: error?.response?.data?.message || "failed to fetch all resumes" });
             throw error;
@@ -61,12 +76,13 @@ const useResumeStore = create((set) => ({
     deleteResume: async (resumeId) => {
         set({ isResumeLoading: true, error: null });
         try {
-            const res = await deleteResumeApi(resumeId)
+            const res = await deleteResumeApi(resumeId);
+            const data = unwrapResponseData(res) ?? {};
             set((state) => ({
                 resumes: state.resumes.filter((item) => item._id !== resumeId),
                 isResumeLoading: false,
             }));
-            return res.data;
+            return data;
         } catch (error) {
             set({ isResumeLoading: false, error: error?.response?.data?.message || "failed to fetch" });
             throw error;
@@ -76,14 +92,15 @@ const useResumeStore = create((set) => ({
     analysisResume: async (analysisData) => {
         set({ isResumeLoading: true, error: null });
         try {
-            const res = await analysisResumeApi(analysisData)
-            set({ isResumeLoading: false, analysisResume: res.data });
-            return res.data;
+            const res = await analysisResumeApi(analysisData);
+            const result = unwrapResponseData(res) ?? null;
+            set({ isResumeLoading: false, analysisResult: result });
+            return result;
         } catch (error) {
-            set({ isResumeLoading: false, error: error?.response?.data?.message || "failed to fetch" });
+            set({ isResumeLoading: false, error: error?.response?.data?.message || "failed to analyze resume" });
             throw error;
         }
     },
 }));
 
-export default useResumeStore
+export default useResumeStore;

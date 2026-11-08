@@ -8,11 +8,6 @@ function Resumes() {
         getOwnResume()
     }, [getOwnResume]);
 
-    // const getPreviewUrl = (url) => {
-    //     return url
-    //         .replace("/raw/upload/", "/image/upload/")
-    //         .replace(".pdf", ".jpg");
-    // };
     return (
         <div>
             Resumes
@@ -22,11 +17,11 @@ function Resumes() {
                     {myResumes.map((resume) => (
                         <li key={resume._id}>
                             <h3>{resume.fileName}</h3>
-                            {/* <img
+                            <img
                                 src={getPreviewUrl(resume.fileUrl)}
                                 alt={resume.fileName}
                                 className="w-48 h-60  rounded-lg"
-                            /> */}
+                            />
                         </li>
                     ))}
                 </ul>

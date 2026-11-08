@@ -2,30 +2,32 @@ import { useRef, useState } from "react";
 import useAuthStore from "../store/useAuthStore"
 import { FaCloudUploadAlt } from "react-icons/fa";
 import useResumeStore from "../store/useResumeStore";
-import { useLocation, useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 
 function Dashboard() {
     const authUser = useAuthStore((s) => s.authUser);
-    const analysisResume = useResumeStore((s) => s.analysisResume);
+    // const analysisResume = useResumeStore((s) => s.analysisResume);
     const fileInputRef = useRef(null);
     const uploadResume = useResumeStore((s) => s.uploadResume)
     const navigate = useNavigate();
     const [resume, setResume] = useState(null);
     const [jobDescription, setJobDescription] = useState("");
 
-
-    const handleAnalysisResume = async () => {
+    const handleUplaod = async () => {
         if (!resume || !jobDescription) {
             console.log("Resume or Jobdescription is required");
         }
         try {
-            const res = await uploadResume(resume);
-            console.log(res, "indashboard");
+            const uploadedResume = await uploadResume(resume);
+            console.log(uploadedResume, "indashboard");
 
-            const resumeId = uploadResume?._id;
+            const resumeId = uploadedResume?._id;
+            console.log(resumeId);
+            console.log(uploadedResume);
 
             if (!resumeId) {
-                console.log(error);
+                console.log("Resume id is required");
+                return;
             }
 
             navigate("/analyze", {
@@ -34,9 +36,12 @@ function Dashboard() {
                     jobDescription
                 }
             });
-            useLocation()
+            fileInputRef.current.value = "";
+            setResume(null);
+            console.log(jobDescription, resumeId, "from dashboard");
+            
         } catch (error) {
-            console.log(error);
+            console.log(error?.response?.data?.message || error.message);
 
         }
     }
@@ -70,7 +75,7 @@ function Dashboard() {
             </div>
             <div className="justify-center items-center flex mt-15">
                 <button className="bg-[#f97316] rounded p-2 cursor-pointer hover:bg-[#ea580c] w-30"
-                    onClick={handleAnalysisResume}
+                    onClick={handleUplaod}
                 >
                     Analize</button>
             </div>
