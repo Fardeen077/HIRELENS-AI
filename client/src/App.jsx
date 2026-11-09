@@ -11,6 +11,7 @@ import useAuthStore from "./store/useAuthStore";
 import Settings from "./pages/Settings";
 import Analyze from "./pages/Analyze";
 import Resumes from "./pages/Resumes";
+import ResumeDetails from "./pages/ResumeDetails";
 
 function App() {
     const getMe = useAuthStore((s) => s.getme);
@@ -31,6 +32,7 @@ function App() {
                         <Route path="/analyze" element={<Analyze />} />
                         <Route path="/resumes" element={<Resumes />} />
                         <Route path="/settings" element={<Settings />} />
+                        <Route  path="/resumes/:id" element={<ResumeDetails />} />
                     </Route>
                 </Route>
 

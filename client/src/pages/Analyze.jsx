@@ -40,32 +40,37 @@ function Analyze() {
             ) : hasAnalysisResult ? (
                 <div>
                     <h2>Analysis Complete</h2>
-                    <p>Match Score: {analysisResult.matchScore}%</p>
+                    <p className={`text-3xl font-bold ${analysisResult.matchScore >= 80 ? "text-green-500" : analysisResult.matchScore >= 50 ? "text-orange-500" : "text-red-500"
+                        }`}>Match Score: {analysisResult.matchScore}%</p>
 
                     <h3>Matched Skills</h3>
                     {analysisResult.matchedSkills?.length ? (
-                        analysisResult.matchedSkills.map((skill, index) => <p key={index}>{skill}</p>)
+                        analysisResult.matchedSkills.map((skill, index) => <p key={index}
+                        className="bg-green-500/10 text-green-500 border border-green-500/30 px-3 py-1 rounded-full">{skill}</p>)
                     ) : (
                         <p>No matched skills found.</p>
                     )}
 
                     <h3>Missing Skills</h3>
-                    {analysisResult.missingSkills?.length ? (
-                        analysisResult.missingSkills.map((skill, index) => <p key={index}>{skill}</p>)
-                    ) : (
-                        <p>No missing skills found.</p>
-                    )}
+                    <div className="flex flex-wrap gap-2">
+                        {analysisResult.missingSkills?.length ? (
+                            analysisResult.missingSkills.map((skill, index) => <p key={index}
+                            className="bg-red-500/10 text-red-400 border border-red-500/30 px-3 py-1 rounded-full">{skill}</p>)
+                        ) : (
+                            <p>No missing skills found.</p>
+                        )}
+                    </div>
 
                     <h3>Strengths</h3>
                     {analysisResult.strengths?.length ? (
-                        analysisResult.strengths.map((skill, index) => <p key={index}>{skill}</p>)
+                        analysisResult.strengths.map((skill, index) => <p className="text-green-400 mb-2" key={index}>{skill}</p>)
                     ) : (
                         <p>No strengths found.</p>
                     )}
 
                     <h3>Suggestions</h3>
                     {analysisResult.suggestions?.length ? (
-                        analysisResult.suggestions.map((item, index) => <p key={index}>{item}</p>)
+                        analysisResult.suggestions.map((item, index) => <p className="text-orange-400 mb-2" key={index}>{item}</p>)
                     ) : (
                         <p>No suggestions available.</p>
                     )}

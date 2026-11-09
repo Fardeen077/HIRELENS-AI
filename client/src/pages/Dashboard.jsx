@@ -2,7 +2,8 @@ import { useRef, useState } from "react";
 import useAuthStore from "../store/useAuthStore"
 import { FaCloudUploadAlt } from "react-icons/fa";
 import useResumeStore from "../store/useResumeStore";
-import {useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 function Dashboard() {
     const authUser = useAuthStore((s) => s.authUser);
@@ -12,6 +13,7 @@ function Dashboard() {
     const navigate = useNavigate();
     const [resume, setResume] = useState(null);
     const [jobDescription, setJobDescription] = useState("");
+    const isResumeLoading = useResumeStore((s) => s.isResumeLoading);
 
     const handleUplaod = async () => {
         if (!resume || !jobDescription) {
@@ -39,7 +41,7 @@ function Dashboard() {
             fileInputRef.current.value = "";
             setResume(null);
             console.log(jobDescription, resumeId, "from dashboard");
-            
+
         } catch (error) {
             console.log(error?.response?.data?.message || error.message);
 
@@ -76,8 +78,15 @@ function Dashboard() {
             <div className="justify-center items-center flex mt-15">
                 <button className="bg-[#f97316] rounded p-2 cursor-pointer hover:bg-[#ea580c] w-30"
                     onClick={handleUplaod}
-                >
-                    Analize</button>
+                > {isResumeLoading ? (
+                    <>
+                        <AiOutlineLoading3Quarters className="h-5 w-5 animate-spin inline mr-2" />
+                        Analize
+                    </>
+                ) : (
+                    "Analize"
+                )}
+                </button>
             </div>
         </div>
     )

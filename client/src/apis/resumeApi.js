@@ -1,9 +1,9 @@
 import { axiosInstance } from "./axiosInstance.js";
 
 const uploadResumeApi = async (resume) => {
-     const formData = new FormData();
+    const formData = new FormData();
     formData.append("resume", resume);
-    
+
     const response = await axiosInstance.post("/resume/upload", formData);
     return response.data;
 };
@@ -27,11 +27,15 @@ const analysisResumeApi = async (analysisData) => {
     const response = await axiosInstance.post("/resume/analysis", analysisData);
     return response.data;
 };
-
+const getResumeByIdApi = async (id) => {
+    const response = await axiosInstance.get(`/resume/getsingleresume/${id}`);
+    return response.data;
+};
 export {
     uploadResumeApi,
     getOwnResumeApi,
     getAllResumeApi,
     deleteResumeApi,
     analysisResumeApi,
+    getResumeByIdApi
 };

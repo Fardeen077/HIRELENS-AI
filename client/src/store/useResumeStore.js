@@ -5,6 +5,7 @@ import {
     getAllResumeApi,
     deleteResumeApi,
     analysisResumeApi,
+    getResumeByIdApi
 } from "../apis/resumeApi";
 
 const unwrapResponseData = (response) => {
@@ -28,8 +29,9 @@ const useResumeStore = create((set) => ({
     analysisResult: null,
     myResumes: [],
     isMyResumeLoading: false,
-    isResumeLoading: true,
+    isResumeLoading: false,
     error: null,
+    selectedResume: null,
 
     uploadResume: async (resume) => {
         set({ isResumeLoading: true, error: null });
@@ -101,6 +103,23 @@ const useResumeStore = create((set) => ({
             throw error;
         }
     },
+    getResumeId: async (id) => {
+        set({ isResumeLoading: true, error: null, selectedResume: null });
+        try {
+            const res = await getResumeByIdApi(id);
+            const data = unwrapResponseData(res);
+            set({ isResumeLoading: false, selectedResume: data });
+            console.log("Store ID:", id);
+            console.log("API Response:", res);
+            return data;
+        } catch (error) {
+            set({
+                isResumeLoading: false,
+                error: error?.response?.data?.message || "failed to fetch resume",
+                selectedResume: null
+            });
+        }
+    }
 }));
 
 export default useResumeStore;

@@ -111,10 +111,32 @@ const deleteResume = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200, {}, "Resume deleted successfully"));
 });
 
+const getResumeById = asyncHandler(async (req, res) => {
+
+    const { id } = req.params;
+
+    const resume = await Resume.findOne({
+        _id: id,
+        userId: req.user._id
+    });
+
+    if (!resume) {
+        throw new ApiError(404, "Resume not found");
+    }
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            resume,
+            "Resume fetched successfully"
+        )
+    );
+});
 export {
     uploadResume,
     getMyResumes,
     deleteResume,
     getAllResumes,
-    analysisResume
+    analysisResume,
+    getResumeById
 };
